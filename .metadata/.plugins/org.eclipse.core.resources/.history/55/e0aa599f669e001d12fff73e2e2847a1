@@ -1,0 +1,26 @@
+package database;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+class OrderDaoTests {
+
+	Context context = null;
+	OrderDao orderDao = null;
+	
+	@BeforeAll
+	void setup() {
+		context = new Context();
+		orderDao = new OrderDao(context);
+	}
+	
+	@Test
+	void testGetAll() {
+		
+		
+		
+	}
+
+}

@@ -1,0 +1,32 @@
+package database;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import model.Order;
+
+class OrderDaoTests {
+
+	Context context = null;
+	OrderDao orderDao = null;
+	
+	@BeforeAll
+	void setup() {
+		context = new Context();
+		orderDao = new OrderDao(context);
+	}
+	
+	@Test
+	void testGetAll() {
+		
+		List<Order> orders = orderDao.getAll();
+		
+		assertTrue(orders.size() > 0);
+		
+	}
+
+}
