@@ -1,0 +1,47 @@
+package ui;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class ExceptionLogger {
+
+	private static ExceptionLogger instance = null;
+
+	public static ExceptionLogger getInstance() {
+
+		if (instance == null) {
+			instance = new ExceptionLogger();
+		}
+		return instance;
+	}
+
+	private ExceptionLogger() {
+
+	}
+
+	public synchronized void log(Exception ex) {
+
+		try {
+			// TODO: Write to logfile
+			Date date = Calendar.getInstance().getTime();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+			String msg = dateFormat.format(date) + " - " + ex.getClass().getSimpleName() + " - " + ex.getMessage()
+					+ "\n";
+
+			msg += ex.getCause().getClass().getSimpleName() + " - " + ex.getCause().getMessage() + "\n";
+
+			Files.write(Path.of("cafesanchezlog.txt"), msg.getBytes(), StandardOpenOption.CREATE,
+					StandardOpenOption.APPEND);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,29 @@
+package dataAccess;
+
+import model.Order;
+import model.Product;
+
+public class DaoFactory {
+	
+	private Daos daoType = Daos.Unknown; 
+	
+	public DaoFactory(Daos daoType) {
+		this.daoType = daoType;
+	}
+
+	public Dao<Product> createProductDao() {
+
+		return new dataAccess.sqlserver.ProductDao();
+	}
+	
+	public Dao<Order> createOrderDao(){
+		
+		return new dataAccess.sqlserver.OrderDao();
+	}
+	
+	public enum Daos{
+		Unknown,
+		Memory, 
+		SqlServer
+	}
+}

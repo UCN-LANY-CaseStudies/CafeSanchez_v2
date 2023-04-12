@@ -1,10 +1,6 @@
 /*
 Cafe Sanchez v2 - Case Study
-
-
 */
-
-
 
 USE [master]
 GO

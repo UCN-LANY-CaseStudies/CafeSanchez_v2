@@ -1,0 +1,26 @@
+package dataAccess;
+
+import model.Order;
+import model.Product;
+
+public class DaoFactory {
+
+	public DaoFactory() {
+		// TODO Auto-generated constructor stub
+
+	}
+
+	public static <TEntity> Dao<TEntity> create() {
+
+		Class<?> entityType;
+		
+		if (Product.class.isAssignableFrom(entityType)) {
+			
+		    return (Dao<TEntity>) new ProductDao();
+		
+		} else if (Order.class.isAssignableFrom(entityType)) {
+		
+			return (Dao<TEntity>) new OrderDao();
+		}
+	}
+}

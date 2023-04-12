@@ -1,0 +1,32 @@
+package dataAccess;
+
+import dataAccess.sqlserver.OrderDao;
+import dataAccess.sqlserver.ProductDao;
+import model.Order;
+import model.Product;
+
+public class DaoFactory {
+
+	public DaoFactory() {
+		// TODO Auto-generated constructor stub
+
+	}
+
+	public static <TEntity> Dao<TEntity> create() throws DaoException {
+
+		Class<?> entityType = null;
+		
+		if (Product.class.isAssignableFrom(entityType)) {
+			
+		    return (Dao<TEntity>) new ProductDao();
+		
+		} else if (Order.class.isAssignableFrom(entityType)) {
+		
+			return (Dao<TEntity>) new OrderDao();
+		
+		} else {
+		
+			throw new DaoException("Cannot create DAO for type "+ entityType);
+		}		
+	}
+}

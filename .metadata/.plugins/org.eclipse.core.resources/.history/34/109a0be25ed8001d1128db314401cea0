@@ -1,0 +1,9 @@
+package ui;
+
+public class ExceptionLogger {
+
+	
+	public synchronized void Log(Exception ex) {
+		
+	}
+}

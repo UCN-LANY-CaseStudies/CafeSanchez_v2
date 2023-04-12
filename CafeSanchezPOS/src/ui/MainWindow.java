@@ -29,16 +29,24 @@ public class MainWindow extends JFrame {
 		this.orderCtrl = orderCtrl;
 
 		initialize();
-		
+
 		reloadOrders();
 	}
 
 	private void finishSelectedOrder() {
 
-		Order selectedOrder = listActiveOrders.getSelectedValue();
-		if (selectedOrder != null && orderCtrl.finishOrder(selectedOrder)) {
+		try {
 
-			reloadOrders();
+			Order selectedOrder = listActiveOrders.getSelectedValue();
+			if (selectedOrder != null && orderCtrl.finishOrder(selectedOrder)) {
+
+				reloadOrders();
+			}
+		} catch (Exception e) {
+
+			ExceptionLogger.getInstance().log(this, e);
+
+			// TODO: this is a critical error so the user must be informed
 		}
 	}
 
@@ -54,10 +62,20 @@ public class MainWindow extends JFrame {
 	}
 
 	private void reloadOrders() {
-		List<Order> activeOrders = orderCtrl.getActiveOrders();
-		if (activeOrders != null)
-			listActiveOrders.setModel(GuiHelpers.mapToListModel(activeOrders));
-		listActiveOrders.updateUI();
+
+		try {
+			List<Order> activeOrders = orderCtrl.getActiveOrders();
+
+			if (activeOrders != null)
+				listActiveOrders.setModel(GuiHelpers.mapToListModel(activeOrders));
+			listActiveOrders.updateUI();
+
+		} catch (Exception e) {
+
+			ExceptionLogger.getInstance().log(this, e);
+
+			// TODO: this is a critical error so the user must be informed
+		}
 	}
 
 	// Renderer for active orders list
@@ -70,14 +88,14 @@ public class MainWindow extends JFrame {
 				boolean isSelected, boolean cellHasFocus) {
 
 			NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-			
-			String cellText = value.getCustomerName() + ": "+ currencyFormatter.format(value.getTotalPrice());
+
+			String cellText = value.getCustomerName() + ": " + currencyFormatter.format(value.getTotalPrice());
 
 			return renderer.getListCellRendererComponent(list, cellText, index, isSelected, cellHasFocus);
 		}
 
 	}
-	
+
 	private void initialize() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(600, 400);

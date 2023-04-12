@@ -1,0 +1,22 @@
+package dataAccess;
+
+import model.Order;
+import model.Product;
+
+public class DaoFactory {
+
+	public DaoFactory() {
+		// TODO Auto-generated constructor stub
+
+	}
+
+	public static Dao<Product> createProductDao() {
+
+		return new dataAccess.sqlserver.ProductDao();
+	}
+	
+	public static Dao<Order> createOrderDao(){
+		
+		return new dataAccess.sqlserver.OrderDao();
+	}
+}

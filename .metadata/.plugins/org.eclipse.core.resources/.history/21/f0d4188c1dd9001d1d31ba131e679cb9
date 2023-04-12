@@ -1,0 +1,38 @@
+package dataAccess.sqlserver;
+
+import java.util.List;
+
+import dataAccess.Dao;
+import model.Product;
+
+public class ProductDao extends BaseDao implements Dao<Product> {
+
+	public ProductDao() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public Product create(Product entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Product> read() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product update(Product entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean delete(Product entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

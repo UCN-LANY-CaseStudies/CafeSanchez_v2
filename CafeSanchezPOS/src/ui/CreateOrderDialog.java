@@ -6,8 +6,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.event.*;
-
 import businessLogic.OrderHandlingController;
 import model.Order;
 import model.Orderline;
@@ -22,7 +20,6 @@ public class CreateOrderDialog extends JDialog {
 	private JPanel contentPane;
 	private JPanel buttonPane;
 	private JTextField txtCustomerName;
-	private JTextField txtDiscount;
 	private JTextField txtTotalPrice;
 	private JComboBox<Product> cboProducts;
 	private JList<Orderline> lstOrderlines;
@@ -34,12 +31,25 @@ public class CreateOrderDialog extends JDialog {
 
 	public CreateOrderDialog(OrderHandlingController ordersCtrl) {
 
-		initialize();
-
 		this.ordersCtrl = ordersCtrl;
 
-		cboProducts.setModel(GuiHelpers.mapToComboBoxModel(ordersCtrl.getProducts()));
-		lstOrderlines.setModel(new DefaultListModel<Orderline>());
+		initialize();
+
+		loadProducts();
+	}
+
+	private void loadProducts() {
+
+		try {
+
+			cboProducts.setModel(GuiHelpers.mapToComboBoxModel(ordersCtrl.getProducts()));
+
+		} catch (Exception e) {
+
+			ExceptionLogger.getInstance().log(this, e);
+
+			// TODO: this is a critical error so the user must be informed
+		}
 	}
 
 	private void addSelectedProductToOrder() {
@@ -69,12 +79,12 @@ public class CreateOrderDialog extends JDialog {
 
 	private void calculateTotalPrice() {
 		float result = 0;
-		
+
 		for (int i = 0; i < lstOrderlines.getModel().getSize(); i++) {
 			Orderline current = lstOrderlines.getModel().getElementAt(i);
 			result += current.getQuantity() * current.getProduct().getPrice();
 		}
-		
+
 		NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
 		txtTotalPrice.setText(currencyFormatter.format(result));
 	}
@@ -87,17 +97,26 @@ public class CreateOrderDialog extends JDialog {
 
 	private void ok() {
 
-		Order order = new Order();
-		order.setCustomerName(txtCustomerName.getText());
-		
-		for (int i = 0; i < lstOrderlines.getModel().getSize(); i++) {
-			Orderline current = lstOrderlines.getModel().getElementAt(i);
-			order.getOrderlines().add(current);
-		}
-		ordersCtrl.createOrder(order);
+		try {
+			Order order = new Order();
+			order.setCustomerName(txtCustomerName.getText());
 
-		this.accepted = true;
-		setVisible(false);
+			for (int i = 0; i < lstOrderlines.getModel().getSize(); i++) {
+				Orderline current = lstOrderlines.getModel().getElementAt(i);
+				order.getOrderlines().add(current);
+			}
+
+			ordersCtrl.createOrder(order);
+
+			this.accepted = true;
+			setVisible(false);
+
+		} catch (Exception e) {
+
+			ExceptionLogger.getInstance().log(this, e);
+			
+			// TODO: this is a critical error so the user must be informed
+		}
 	}
 
 	public boolean isAccepted() {
@@ -188,38 +207,7 @@ public class CreateOrderDialog extends JDialog {
 		lstOrderlines.setEnabled(false);
 		scrollPane.setBounds(110, 80, 200, 53);
 		scrollPane.setViewportView(lstOrderlines);
-
-		// order discount
-//		JLabel lblOrderDiscount = new JLabel("Discout (%): ");
-//		lblOrderDiscount.setBounds(10, 139, 75, 14);
-//		contentPane.add(lblOrderDiscount);
-
-//		txtDiscount = new JTextField();
-//		txtDiscount.setColumns(10);
-//		txtDiscount.getDocument().addDocumentListener(new DocumentListener() {
-//
-//			@Override
-//			public void insertUpdate(DocumentEvent e) {
-//
-//				calculateTotalPrice();
-//			}
-//
-//			@Override
-//			public void removeUpdate(DocumentEvent e) {
-//
-//				calculateTotalPrice();
-//			}
-//
-//			@Override
-//			public void changedUpdate(DocumentEvent e) {
-//
-//				calculateTotalPrice();
-//			}
-//
-//		});
-//		txtDiscount.setBounds(110, 135, 200, 20);
-
-//		contentPane.add(txtDiscount);
+		lstOrderlines.setModel(new DefaultListModel<Orderline>());
 
 		// total price
 		JLabel lblTotalPrice = new JLabel("Total Price: ");
@@ -259,6 +247,5 @@ public class CreateOrderDialog extends JDialog {
 			}
 		});
 		buttonPane.add(btnCancel);
-
 	}
 }

@@ -1,0 +1,21 @@
+package ui;
+
+import businessLogic.OrderHandlingController;
+import dataAccess.Dao;
+import dataAccess.DaoFactory;
+import model.Order;
+import model.Product;
+
+public class Program {
+
+	public static void main(String[] args) {
+
+		Dao<Order> orderDao = DaoFactory.createOrderDao();
+		Dao<Product> productDao = DaoFactory.createProductDao();
+
+		OrderHandlingController orderCtrl = new OrderHandlingController(orderDao, productDao);
+
+		MainWindow main = new MainWindow(orderCtrl);
+		main.setVisible(true);
+	}
+}

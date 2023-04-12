@@ -3,45 +3,44 @@ package businessLogic;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import database.OrderDao;
-import database.ProductDao;
+import dataAccess.Dao;
 import model.Order;
 import model.Product;
 
 public class OrderHandlingController {
 	
-	private OrderDao orderDao;
-	private ProductDao productDao;
+	private Dao<Order> orderDao;
+	private Dao<Product> productDao;
 	
-	public OrderHandlingController(OrderDao orderDao, ProductDao productDao) { // constructor is private to enforce singleton
+	public OrderHandlingController(Dao<Order> orderDao, Dao<Product> productDao) { // constructor is private to enforce singleton
 		
 		this.productDao = productDao;
 		this.orderDao = orderDao;
 	}
 
-	public boolean createOrder(Order order) {
+	public boolean createOrder(Order order) throws Exception {
 		
-		Order createdOrder = orderDao.createOrder(order);
+		Order createdOrder = orderDao.create(order);
 		
 		return createdOrder.getStatus().equals(Order.STATUS_ACTIVE);
 	}
 
-	public boolean finishOrder(Order selectedOrder) {
+	public boolean finishOrder(Order selectedOrder) throws Exception {
 		
 		selectedOrder.setStatus(Order.STATUS_FINISHED);
-		Order updatedOrder = orderDao.updateOrder(selectedOrder);
+		Order updatedOrder = orderDao.update(selectedOrder);
 		
 		return updatedOrder.getStatus().equals(Order.STATUS_FINISHED);
 	}
 
-	public List<Product> getProducts() {
+	public List<Product> getProducts() throws Exception {
 
-		return  productDao.getAll();
+		return  productDao.read();
 	}
 
-	public List<Order> getActiveOrders() {
+	public List<Order> getActiveOrders() throws Exception {
 		
-		List<Order> orders = orderDao.getAll();
+		List<Order> orders = orderDao.read();
 		
 		if(orders == null)
 			return null; 

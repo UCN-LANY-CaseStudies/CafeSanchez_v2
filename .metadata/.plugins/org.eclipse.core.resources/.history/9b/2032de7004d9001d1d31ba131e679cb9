@@ -1,0 +1,38 @@
+package ui;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class ExceptionLogger {
+
+	private static ExceptionLogger instance = null;
+
+	public static ExceptionLogger getInstance() {
+
+		if (instance == null) {
+			instance = new ExceptionLogger();
+		}
+		return instance;
+	}
+
+	private ExceptionLogger() {
+
+	}
+
+	public synchronized void Log(Exception ex) {
+
+		try { 
+			// TODO: Write to logfile
+			File log = new File("cafesanchezlog.txt");
+
+			try (FileWriter logWriter = new FileWriter(log)) {
+				logWriter.append(ex.getMessage());
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
