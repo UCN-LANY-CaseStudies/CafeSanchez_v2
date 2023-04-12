@@ -41,9 +41,6 @@ public class ExceptionLogger {
 			if(source != null) {
 				 msg += source.getClass().getSimpleName() + " - ";
 			}
-			else {
-				msg += "Program - ";
-			}
 			
 			int idx = 0;
 
