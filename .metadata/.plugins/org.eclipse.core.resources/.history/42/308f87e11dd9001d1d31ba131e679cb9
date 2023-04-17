@@ -1,9 +1,0 @@
-package dataAccess.sqlserver;
-
-public class OrderDao extends BaseDao {
-
-	public OrderDao() {
-		// TODO Auto-generated constructor stub
-	}
-
-}

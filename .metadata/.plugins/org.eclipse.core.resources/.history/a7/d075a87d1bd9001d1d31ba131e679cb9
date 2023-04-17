@@ -1,9 +1,0 @@
-package dataAccess.sqlserver;
-
-public class SqlServerBaseDao {
-
-	public SqlServerBaseDao() {
-		// TODO Auto-generated constructor stub
-	}
-
-}

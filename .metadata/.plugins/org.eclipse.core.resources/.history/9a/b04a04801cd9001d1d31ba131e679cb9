@@ -1,9 +1,0 @@
-package dataAccess.sqlserver;
-
-public class ProductDao extends BaseDao {
-
-	public ProductDao() {
-		// TODO Auto-generated constructor stub
-	}
-
-}
